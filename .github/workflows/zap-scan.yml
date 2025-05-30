@@ -15,11 +15,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Prepare ZAP context file
-        run: |
-          mkdir -p ./owasp-zap
-          cp .zap/juice.context ./owasp-zap/juice.context
-
       - name: Run ZAP Full Scan using context file
         id: zap
         uses: zaproxy/action-full-scan@v0.12.0
