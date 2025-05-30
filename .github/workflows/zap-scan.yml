@@ -1,7 +1,9 @@
 name: ZAP Juice Shop Active Scan
 
 on:
-  workflow_dispatch:
+  push:
+    branches:
+      - main
 
 permissions:
   contents: read
@@ -16,7 +18,9 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Prepare ZAP context file
-        run: mkdir -p /tmp/zap && cp .zap/juice.context /tmp/zap/juice.context
+        run: |
+          mkdir -p ./owasp-zap
+          cp .zap/juice.context ./owasp-zap/juice.context
 
       - name: Run ZAP Full Scan using context file
         id: zap
@@ -24,11 +28,7 @@ jobs:
         with:
           target: 'https://juice-shop.herokuapp.com'
           fail_action: false
-          cmd_options: >
-            -configfile /tmp/zap/juice.context
-            -J report_json.json 
-            -w report_md.md 
-            -r report_html.html
+          cmd_options: '-configfile /zap/wrk/juice.context'
 
       - name: Upload HTML Report
         if: always()
