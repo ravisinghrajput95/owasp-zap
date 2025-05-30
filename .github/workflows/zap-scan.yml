@@ -32,17 +32,16 @@ jobs:
           fail_action: false
           cmd_options: >
             -a
-            -r zap-report.html
 
       - name: Upload HTML Report
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: ZAP-HTML-Report
-          path: zap-report.html
+          path: report_html.html
 
       - name: Upload SARIF Report
         if: always()
         uses: github/codeql-action/upload-sarif@v3
         with:
-          sarif_file: zap.sarif
+          sarif_file: report_json.sarif
