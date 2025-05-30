@@ -26,9 +26,9 @@ jobs:
         id: zap
         uses: zaproxy/action-full-scan@v0.12.0
         with:
-          target: 'https://juice-shop.herokuapp.com'
+          target: https://juice-shop.herokuapp.com
           fail_action: false
-          cmd_options: '-configfile /zap/wrk/juice.context'
+          cmd_options: '-n owasp-zap/juice.context -r report_html.html'
 
       - name: Upload HTML Report
         if: always()
