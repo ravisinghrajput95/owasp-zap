@@ -3,11 +3,11 @@
   <scope>
     <inScope>https://juice-shop.herokuapp.com.*</inScope>
   </scope>
-  <authentication>
-    <method>formBasedAuthentication</method>
-    <loginUrl>https://juice-shop.herokuapp.com/rest/user/login</loginUrl>
-    <loginRequestData>email={%username%}&amp;password={%password%}</loginRequestData>
-  </authentication>
+  <sessionManagement>
+    <type>script</type>
+    <scriptEngine>ECMAScript</scriptEngine>
+    <scriptFile>scripts/sessionManagement/juiceShop.js</scriptFile>
+  </sessionManagement>
   <users>
     <user>
       <name>adminUser</name>
