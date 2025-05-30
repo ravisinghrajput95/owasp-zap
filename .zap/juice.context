@@ -1,32 +1,48 @@
-<context>
-  <name>JuiceShopCtx</name>
-
-  <includeInContext>https://juice-shop.herokuapp.com.*</includeInContext>
-
-  <authentication>
-    <method>formBasedAuthentication</method>
-    <formBasedAuthentication>
-      <loginUrl>https://juice-shop.herokuapp.com/rest/user/login</loginUrl>
-      <loginRequestData>email={%username%}&amp;password={%password%}</loginRequestData>
-    </formBasedAuthentication>
-  </authentication>
-
-  <users>
-    <user>
-      <name>adminUser</name>
-      <credentials>
-        <credential>
-          <type>UsernamePassword</type>
-          <username>admin@juice-sh.op</username>
-          <password>admin123</password>
-        </credential>
-      </credentials>
-      <enabled>true</enabled>
-    </user>
-  </users>
-
-  <forcedUser>
-    <enabled>true</enabled>
-    <userIndex>0</userIndex>
-  </forcedUser>
-</context>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<configuration>
+    <context>
+        <name>JuiceShop</name>
+        <desc>Context for Juice Shop with form-based authentication</desc>
+        <inscope>true</inscope>
+        <incregexes>https://juice-shop.herokuapp.com.*</incregexes>
+        <tech>
+            <include>Db.MySQL</include>
+            <include>Language.JSP/Servlet</include>
+            <include>OS.Linux</include>
+            <include>WS.Tomcat</include>
+        </tech>
+        <urlparser>
+            <class>org.zaproxy.zap.model.StandardParameterParser</class>
+            <config>{"kvps":"&amp;","kvs":"=","struct":[]}</config>
+        </urlparser>
+        <postparser>
+            <class>org.zaproxy.zap.model.StandardParameterParser</class>
+            <config>{"kvps":"&amp;","kvs":"=","struct":[]}</config>
+        </postparser>
+        <authentication>
+            <type>2</type> <!-- Form-based auth -->
+            <loggedin>"authentication":true</loggedin>
+            <loggedout>"authentication":false</loggedout>
+            <form>
+                <loginurl>https://juice-shop.herokuapp.com/rest/user/login</loginurl>
+                <loginbody>email={%username%}&amp;password={%password%}</loginbody>
+            </form>
+        </authentication>
+        <users>
+            <user>1;true;admin@juice-sh.op;2;admin123</user>
+        </users>
+        <forceduser>1</forceduser>
+        <session>
+            <type>0</type>
+        </session>
+        <authorization>
+            <type>0</type>
+            <basic>
+                <header/>
+                <body/>
+                <logic>AND</logic>
+                <code>-1</code>
+            </basic>
+        </authorization>
+    </context>
+</configuration>
