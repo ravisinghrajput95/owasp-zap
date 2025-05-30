@@ -1,26 +1,34 @@
-name: ZAP Active Scan - Juice Shop
+name: ZAP Active Scan - Juice Shop with Auth
 
 on:
   workflow_dispatch:
+
+permissions:
+  actions: read
+  contents: read
+  security-events: write  # Needed for SARIF upload
 
 jobs:
   zap_active_scan:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Run ZAP Active Full Scan with Form-based Authentication
+      - name: Checkout (needed even if not used)
+        uses: actions/checkout@v4
+
+      - name: Run ZAP Active Full Scan with Form Auth
         id: zap
         uses: zaproxy/action-full-scan@v0.12.0
         with:
           target: 'https://juice-shop.herokuapp.com'
           fail_action: false
           cmd_options: >
-            -config context.contexts.default.name=JuiceShopContext
+            -config context.contexts.default.name=JuiceShopCtx
             -config context.contexts.default.authenticationMethodName=formBasedAuthentication
             -config context.contexts.default.authenticationParameters.loginUrl=https://juice-shop.herokuapp.com/rest/user/login
             -config context.contexts.default.authenticationParameters.loginRequestData=email%3D{%username%}%26password%3D{%password%}
             -config context.contexts.default.includeInContext=.*juice-shop\\.herokuapp\\.com.*
-            -config context.contexts.default.users.0.name=admin
+            -config context.contexts.default.users.0.name=adminUser
             -config context.contexts.default.users.0.credentials.username=admin%40juice-sh.op
             -config context.contexts.default.users.0.credentials.password=admin123
             -config context.contexts.default.users.0.enabled=true
@@ -28,15 +36,15 @@ jobs:
             -config context.contexts.default.forcedUser=0
             -addoninstall passiveScan-as-zapreport
 
-      - name: Upload ZAP HTML Report as Pipeline Artifact
+      - name: Upload ZAP HTML Report
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v3.1.3
         with:
           name: ZAP-Active-Scan-Report
           path: report_html.html
 
-      - name: Upload ZAP SARIF Report to GitHub Security Dashboard
+      - name: Upload SARIF to GitHub Security Dashboard
         if: always()
-        uses: github/codeql-action/upload-sarif@v2
+        uses: github/codeql-action/upload-sarif@v3
         with:
           sarif_file: report_json.sarif
