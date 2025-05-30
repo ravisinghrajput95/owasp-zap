@@ -1,0 +1,24 @@
+<context>
+  <name>JuiceShopCtx</name>
+  <scope>
+    <inScope>https://juice-shop.herokuapp.com.*</inScope>
+  </scope>
+  <authentication>
+    <method>formBasedAuthentication</method>
+    <loginUrl>https://juice-shop.herokuapp.com/rest/user/login</loginUrl>
+    <loginRequestData>email={%username%}&amp;password={%password%}</loginRequestData>
+  </authentication>
+  <users>
+    <user>
+      <name>adminUser</name>
+      <credentials>
+        <username>admin@juice-sh.op</username>
+        <password>admin123</password>
+      </credentials>
+    </user>
+  </users>
+  <forcedUser>
+    <enabled>true</enabled>
+    <userIndex>0</userIndex>
+  </forcedUser>
+</context>
